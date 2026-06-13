@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>VG OST Arena · Battle of the Soundtracks</title>
+    <!-- GitHub Pages compatibility -->
+    <base href="/">
+    <style>
+        /* Your existing CSS - copy exactly from previous message */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0c12;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            color: #eef2ff;
+            padding: 2rem 1.5rem 3rem 1.5rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #C0F2FF, #A78BFA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .sub {
+            color: #8b95b5;
+            margin-bottom: 2rem;
+            border-left: 3px solid #a78bfa;
+            padding-left: 1rem;
+        }
+
+        .card {
+            background: #11161f;
+            border-radius: 2rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #252e3f;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            transition: all 0.2s;
+        }
+
+        .card-header {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px dashed #2a3448;
+            padding-bottom: 0.65rem;
+        }
+
+        .tourney-panel {
+            background: #0e121b;
+            border-radius: 1.5rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .battle-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .ost-card {
+            background: #1a202c;
+            border-radius: 1.5rem;
+            flex: 1;
+            min-width: 260px;
+            padding: 1rem;
+            transition: transform 0.1s ease;
+            border: 1px solid #2d374b;
+            cursor: pointer;
+        }
+
+        .ost-card:hover {
+            background: #1e293b;
+            border-color: #a78bfa;
+            transform: scale(1.01);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            margin-bottom: 1rem;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: #000;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .song-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .meta {
+            font-size: 0.8rem;
+            color: #9ca3cf;
+            margin: 0.25rem 0;
+        }
+
+        .winrate-badge {
+            background: #2c3e2f;
+            padding: 0.2rem 0.6rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            color: #b9fbc0;
+        }
+
+        .vs-divider {
+            font-size: 2rem;
+            font-weight: 800;
+            background: #1f293d;
+            padding: 0 1rem;
+            border-radius: 4rem;
+            align-self: center;
+        }
+
+        .vote-btn {
+            background: #a855f7;
+            border: none;
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-top: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+
+        .vote-btn:hover {
+            background: #c084fc;
+            transform: scale(0.98);
+        }
+
+        .tourney-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        button {
+            background: #2d374b;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        button.primary {
+            background: #7c3aed;
+        }
+
+        button.danger {
+            background: #991b1b;
+        }
+
+        .admin-locked {
+            background: #0f1119;
+            border-top: 2px solid #facc15;
+        }
+
+        .admin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .admin-form input, .admin-form select {
+            background: #0b0f17;
+            border: 1px solid #2f3a55;
+            padding: 0.7rem;
+            border-radius: 1rem;
+            color: white;
+        }
+
+        .stats-grid {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid #1f2a3a;
+        }
+
+        th {
+            color: #c084fc;
+        }
+
+        .badge-win {
+            background: #15803d;
+            padding: 2px 8px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .lock-icon {
+            font-size: 0.8rem;
+            background: #2d2f3e;
+            border-radius: 2rem;
+            padding: 0.2rem 0.8rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.75rem;
+            color: #4b556b;
+        }
+        
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            .battle-area { flex-direction: column; }
+            .vs-divider { align-self: center; }
+        }
+        
+        /* GitHub Pages deployment notification */
+        .deploy-badge {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: #1f293d;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎮 VG OST ARENA</h1>
+    <div class="sub">⬤ tournament duel · choose your champion soundtrack · winrates evolve</div>
+
+    <!-- TOURNAMENT CARD -->
+    <div class="card">
+        <div class="card-header">⚔️ ACTIVE TOURNAMENT • ELIMINATION BRACKET</div>
+        <div class="tourney-panel">
+            <div class="tourney-stats">
+                <span>🏆 Mode: <strong id="tourneyModeLabel">Best of 128</strong></span>
+                <span>🎯 Remaining songs: <strong id="remainingCount">0</strong></span>
+                <span>📊 Current round: <strong id="roundPhase">—</strong></span>
+                <div>
+                    <button id="mode128Btn" class="primary">Best of 128</button>
+                    <button id="mode256Btn" class="primary">Best of 256</button>
+                    <button id="resetTourneyBtn" class="danger">⟳ Reset Tournament</button>
+                </div>
+            </div>
+            <div id="battleContainer" class="battle-area">
+                <div class="ost-card" style="text-align:center;">No active battle<br>Add songs or reset tournament</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div class="card" id="adminCard">
+        <div class="card-header">🔐 ADMIN VAULT <span id="adminLockBadge" class="lock-icon">🔒 locked</span></div>
+        <div id="adminContent">
+            <p style="margin-bottom: 10px;">Enter admin password to add new songs:</p>
+            <div style="display: flex; gap: 10px;">
+                <input type="password" id="adminPassInput" placeholder="password" style="flex:1; background:#0f121b; border:1px solid #334155; border-radius: 2rem; padding: 0.5rem 1rem;">
+                <button id="unlockAdminBtn">Unlock</button>
+            </div>
+            <div id="adminTools" style="display: none; margin-top: 20px;">
+                <div class="admin-form">
+                    <h4>➕ Add new OST track</h4>
+                    <input type="text" id="songName" placeholder="Song name (ex: 'Gerudo Valley')">
+                    <input type="text" id="gameName" placeholder="Game (ex: 'The Legend of Zelda: OOT')">
+                    <input type="text" id="gameRelease" placeholder="Game release year (ex: 1998)">
+                    <input type="text" id="youtubeUrl" placeholder="YouTube URL (full link or embed code)">
+                    <button id="addSongBtn">➕ Add to library</button>
+                    <small style="color:#a78bfa">⚠️ URL format: any standard youtube.com/watch?v=... or youtu.be/...</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SONG LIBRARY & STATS -->
+    <div class="card">
+        <div class="card-header">📀 HALL OF OSTS · stats & win rates</div>
+        <div class="stats-grid">
+            <table id="statsTable">
+                <thead>
+                    <tr><th>🎵 Song</th><th>🎮 Game</th><th>📅 Release</th><th>🏆 Wins</th><th>⚔️ Matches</th><th>📈 Win Rate</th></tr>
+                </thead>
+                <tbody id="statsTableBody">
+                    <tr><td colspan="6">Loading library...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 1rem; font-size:0.8rem; text-align:right;">✅ tracks sorted by win rate (high to low)</div>
+    </div>
+    <footer>🎧 each battle updates winrate · admin wall password: "vanguard"</footer>
+    <div class="deploy-badge">✨ Live on GitHub Pages</div>
+</div>
+
+<script>
+    // DATA MODEL
+    let songs = [];
+    let tournamentActive = false;
+    let tournamentMode = 128;
+    let currentMatchSongs = [];
+    let tournamentQueue = [];
+    let waitingForVote = false;
+    const ADMIN_PASSWORD = "vanguard";
+    let adminUnlocked = false;
+
+    function extractYouTubeId(url) {
+        if (!url) return null;
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    function loadData() {
+        const stored = localStorage.getItem("vgOstArena");
+        if (stored) {
+            songs = JSON.parse(stored);
+        } else {
+            songs = [
+                { id: "s1", name: "City of Tears", game: "Hollow Knight", releaseYear: 2017, youtubeId: "dH9qFj3_yEw", wins: 4, matches: 9 },
+                { id: "s2", name: "BFG Division", game: "Doom (2016)", releaseYear: 2016, youtubeId: "QHRuTYr0JGY", wins: 7, matches: 10 },
+                { id: "s3", name: "Stickerbrush Symphony", game: "Donkey Kong Country 2", releaseYear: 1995, youtubeId: "bnKCWeM2T8Q", wins: 5, matches: 8 },
+                { id: "s4", name: "The Wolven Storm", game: "The Witcher 3", releaseYear: 2015, youtubeId: "ZMjhW-dQG98", wins: 6, matches: 8 },
+                { id: "s5", name: "One-Winged Angel", game: "Final Fantasy VII", releaseYear: 1997, youtubeId: "t7wJ8pE2qKU", wins: 8, matches: 12 }
+            ];
+            songs.forEach(s => { if(s.matches===0 && s.wins>0) s.matches=s.wins; else if(s.matches===0 && s.wins===0) s.matches=0; });
+            saveData();
+        }
+        if(!songs.length) songs = [];
+        renderStatsTable();
+        tryInitTournament();
+    }
+
+    function saveData() {
+        localStorage.setItem("vgOstArena", JSON.stringify(songs));
+    }
+
+    function addWin(songId) {
+        const song = songs.find(s => s.id === songId);
+        if (song) {
+            song.wins++;
+            song.matches = (song.matches || 0) + 1;
+            saveData();
+        }
+    }
+    
+    function addLoss(songId) {
+        const song = songs.find(s => s.id === songId);
+        if (song) {
+            song.matches = (song.matches || 0) + 1;
+            saveData();
+        }
+    }
+
+    function initTournament() {
+        if (songs.length < 2) {
+            tournamentActive = false;
+            document.getElementById("battleContainer").innerHTML = `<div class="ost-card">❌ Need at least 2 songs to start tournament. Add more via Admin panel.</div>`;
+            document.getElementById("remainingCount").innerText = "0";
+            document.getElementById("roundPhase").innerText = "—";
+            return;
+        }
+        let maxSlots = tournamentMode;
+        let pool = [...songs];
+        if(pool.length > maxSlots) {
+            for (let i = pool.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [pool[i], pool[j]] = [pool[j], pool[i]];
+            }
+            pool = pool.slice(0, maxSlots);
+        }
+        if(pool.length % 2 !== 0) pool.pop();
+        if(pool.length < 2) {
+            tournamentActive = false;
+            return;
+        }
+        tournamentQueue = pool.map(s => s.id);
+        for (let i = tournamentQueue.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [tournamentQueue[i], tournamentQueue[j]] = [tournamentQueue[j], tournamentQueue[i]];
+        }
+        tournamentActive = true;
+        waitingForVote = false;
+        advanceToNextMatch();
+        renderStatsTable();
+        updateTourneyUI();
+    }
+
+    function advanceToNextMatch() {
+        if (!tournamentActive) return;
+        if (tournamentQueue.length === 1) {
+            const winnerSong = songs.find(s => s.id === tournamentQueue[0]);
+            tournamentActive = false;
+            document.getElementById("battleContainer").innerHTML = `<div class="ost-card" style="text-align:center; background: #2a2635;">🏆 TOURNAMENT CHAMPION 🏆<br><strong>${winnerSong ? winnerSong.name : "??"}</strong> from ${winnerSong?.game}<br>👑 ultimate OST!</div>`;
+            document.getElementById("roundPhase").innerText = "FINISHED";
+            document.getElementById("remainingCount").innerText = "1";
+            renderStatsTable();
+            return;
+        }
+        if (tournamentQueue.length < 2) return;
+        const idA = tournamentQueue[0];
+        const idB = tournamentQueue[1];
+        const songA = songs.find(s => s.id === idA);
+        const songB = songs.find(s => s.id === idB);
+        if (!songA || !songB) {
+            tournamentQueue = tournamentQueue.filter(id => songs.some(s => s.id === id));
+            if(tournamentQueue.length<2) initTournament();
+            else advanceToNextMatch();
+            return;
+        }
+        currentMatchSongs = [songA, songB];
+        renderBattleUI(songA, songB);
+        updateTourneyUI();
+    }
+
+    function renderBattleUI(songA, songB) {
+        const container = document.getElementById("battleContainer");
+        const embedUrlA = `https://www.youtube.com/embed/${songA.youtubeId}?autoplay=0&enablejsapi=0`;
+        const embedUrlB = `https://www.youtube.com/embed/${songB.youtubeId}?autoplay=0`;
+        container.innerHTML = `
+            <div class="ost-card" data-id="${songA.id}">
+                <div class="video-wrapper"><iframe src="${embedUrlA}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                <div class="song-title">🎵 ${escapeHtml(songA.name)}</div>
+                <div class="meta">🎮 ${escapeHtml(songA.game)} (${songA.releaseYear})</div>
+                <div class="meta">⚡ win rate: ${getWinRate(songA)}%</div>
+                <button class="vote-btn" data-choice="${songA.id}">🔥 VOTE THIS OST</button>
+            </div>
+            <div class="vs-divider">VS</div>
+            <div class="ost-card" data-id="${songB.id}">
+                <div class="video-wrapper"><iframe src="${embedUrlB}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                <div class="song-title">🎵 ${escapeHtml(songB.name)}</div>
+                <div class="meta">🎮 ${escapeHtml(songB.game)} (${songB.releaseYear})</div>
+                <div class="meta">⚡ win rate: ${getWinRate(songB)}%</div>
+                <button class="vote-btn" data-choice="${songB.id}">🔥 VOTE THIS OST</button>
+            </div>
+        `;
+        document.querySelectorAll('.vote-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!tournamentActive || waitingForVote) return;
+                const chosenId = btn.getAttribute('data-choice');
+                if (!chosenId) return;
+                processVote(chosenId);
+            });
+        });
+    }
+
+    function processVote(winnerId) {
+        if (!tournamentActive || currentMatchSongs.length !== 2) return;
+        waitingForVote = true;
+        const loserId = currentMatchSongs[0].id === winnerId ? currentMatchSongs[1].id : currentMatchSongs[0].id;
+        addWin(winnerId);
+        addLoss(loserId);
+        tournamentQueue.shift();
+        tournamentQueue.shift();
+        tournamentQueue.push(winnerId);
+        renderStatsTable();
+        waitingForVote = false;
+        advanceToNextMatch();
+        updateTourneyUI();
+    }
+
+    function getWinRate(song) {
+        if (!song.matches || song.matches === 0) return 0;
+        return Math.round((song.wins / song.matches) * 100);
+    }
+
+    function updateTourneyUI() {
+        const remaining = tournamentActive ? tournamentQueue.length : (songs.length > 0 ? songs.length : 0);
+        document.getElementById("remainingCount").innerText = tournamentActive ? tournamentQueue.length : (songs.length);
+        if(tournamentActive && tournamentQueue.length>1) {
+            document.getElementById("roundPhase").innerText = `Round of ${tournamentQueue.length}`;
+        } else if(tournamentActive && tournamentQueue.length===1) {
+            document.getElementById("roundPhase").innerText = "Champion decided";
+        } else {
+            document.getElementById("roundPhase").innerText = "Idle";
+        }
+        document.getElementById("tourneyModeLabel").innerText = `Best of ${tournamentMode}`;
+    }
+
+    function tryInitTournament() {
+        if(songs.length>=2) {
+            initTournament();
+        } else {
+            tournamentActive=false;
+            document.getElementById("battleContainer").innerHTML = `<div class="ost-card">🎧 Add at least two songs (admin panel) to start tournament.</div>`;
+            updateTourneyUI();
+        }
+    }
+
+    function renderStatsTable() {
+        const tbody = document.getElementById("statsTableBody");
+        if(!songs.length) {
+            tbody.innerHTML = '<tr><td colspan="6">No songs yet. Add via admin panel.</td></tr>';
+            return;
+        }
+        const sorted = [...songs].sort((a,b)=> {
+            const wrA = getWinRate(a);
+            const wrB = getWinRate(b);
+            return wrB - wrA;
+        });
+        tbody.innerHTML = sorted.map(song => `
+            <tr>
+                <td><strong>${escapeHtml(song.name)}</strong></td>
+                <td>${escapeHtml(song.game)}</td>
+                <td>${song.releaseYear || '—'}</td>
+                <td>🏆 ${song.wins || 0}</td>
+                <td>⚔️ ${song.matches || 0}</td>
+                <td><span class="badge-win" style="background:${getWinRate(song)>50?'#15803d':'#3b2e2e'}">${getWinRate(song)}%</span></td>
+            </tr>
+        `).join('');
+    }
+
+    function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;});}
+
+    function addNewSong(songNameVal, gameVal, releaseVal, urlVal) {
+        if(!songNameVal || !gameVal || !urlVal) { alert("Please fill at least song name, game and YouTube URL"); return false; }
+        const youtubeId = extractYouTubeId(urlVal);
+        if(!youtubeId) { alert("Invalid YouTube URL. Use standard link like https://www.youtube.com/watch?v=xxxxxx"); return false; }
+        const newId = Date.now().toString() + Math.random().toString(36);
+        const releaseYearNum = releaseVal ? parseInt(releaseVal) : (new Date().getFullYear());
+        const newSong = {
+            id: newId,
+            name: songNameVal.trim(),
+            game: gameVal.trim(),
+            releaseYear: isNaN(releaseYearNum) ? 2000 : releaseYearNum,
+            youtubeId: youtubeId,
+            wins: 0,
+            matches: 0
+        };
+        songs.push(newSong);
+        saveData();
+        renderStatsTable();
+        if(tournamentActive) {
+            if(confirm("New song added! Reset tournament to include it?")) {
+                initTournament();
+            }
+        } else {
+            if(songs.length>=2) initTournament();
+            else tryInitTournament();
+        }
+        updateTourneyUI();
+        return true;
+    }
+
+    function resetTournament() {
+        if(songs.length >=2) {
+            initTournament();
+        } else {
+            tournamentActive=false;
+            document.getElementById("battleContainer").innerHTML = `<div class="ost-card">❌ Need at least 2 songs to start tournament.</div>`;
+            updateTourneyUI();
+        }
+    }
+
+    function updateAdminUI() {
+        const toolsDiv = document.getElementById("adminTools");
+        const badge = document.getElementById("adminLockBadge");
+        if(adminUnlocked) {
+            toolsDiv.style.display = "block";
+            badge.innerHTML = "🔓 admin mode";
+            badge.style.background = "#2b5038";
+        } else {
+            toolsDiv.style.display = "none";
+            badge.innerHTML = "🔒 locked";
+            badge.style.background = "#2d2f3e";
+        }
+    }
+
+    // Event listeners
+    document.getElementById("mode128Btn").addEventListener("click", () => { tournamentMode=128; resetTournament(); });
+    document.getElementById("mode256Btn").addEventListener("click", () => { tournamentMode=256; resetTournament(); });
+    document.getElementById("resetTourneyBtn").addEventListener("click", () => resetTournament());
+    document.getElementById("unlockAdminBtn").addEventListener("click", () => {
+        const pass = document.getElementById("adminPassInput").value;
+        if(pass === ADMIN_PASSWORD) {
+            adminUnlocked=true;
+            updateAdminUI();
+            document.getElementById("adminPassInput").value = "";
+        } else { alert("Wrong password! Access denied."); }
+    });
+    document.getElementById("addSongBtn").addEventListener("click", () => {
+        if(!adminUnlocked) { alert("Admin mode not unlocked. Enter password first."); return; }
+        const name = document.getElementById("songName").value;
+        const game = document.getElementById("gameName").value;
+        const release = document.getElementById("gameRelease").value;
+        const url = document.getElementById("youtubeUrl").value;
+        if(addNewSong(name, game, release, url)) {
+            document.getElementById("songName").value = "";
+            document.getElementById("gameName").value = "";
+            document.getElementById("gameRelease").value = "";
+            document.getElementById("youtubeUrl").value = "";
+        }
+    });
+
+    loadData();
+</script>
+</body>
+</html>
